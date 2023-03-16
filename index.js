@@ -1,12 +1,32 @@
 require = require('esm')(module);
 const { Client } = require('pg');
 const cron = require('node-cron');
-const logger = require('./logger').default;
+const { createLogger, format, transports } = require('winston');
+
+
+const timestampFormat = format.timestamp({
+  format: 'YYYY-MM-DD HH:mm:ss',
+});
+
+
+//logger
+const logger = createLogger({
+  level: 'info',
+  format: format.combine(
+    timestampFormat,
+    format.json()
+  
+  ),
+  transports:[
+    new transports.File({filename: 'C:/Users/Ramkumar/Desktop/api.log',
+    level:'info'})
+  ]
+});
 
 
 
 // Schedule task to run every hour
-cron.schedule('*/1 * * * *', async () => {
+cron.schedule('0 */4 * * *', async () => {
   const client = new Client({
     user: 'postgres',
     host: 'localhost',
@@ -72,7 +92,7 @@ cron.schedule('*/1 * * * *', async () => {
     }
 
     console.log('Data inserted successfully!');
-    console.log('Data inserted successfully!');
+   
   } catch (error) {
     console.error('Error:', error);
   } finally {
