@@ -1,27 +1,9 @@
 require = require('esm')(module);
 const { Client } = require('pg');
 const cron = require('node-cron');
-const { createLogger, format, transports } = require('winston');
+const logger = require('./logger').default;
 
 
-const timestampFormat = format.timestamp({
-  format: 'YYYY-MM-DD HH:mm:ss',
-});
-
-
-//logger
-const logger = createLogger({
-  level: 'info',
-  format: format.combine(
-    timestampFormat,
-    format.json()
-  
-  ),
-  transports:[
-    new transports.File({filename: 'C:/Users/Ramkumar/Desktop/api.log',
-    level:'info'})
-  ]
-});
 
 // Schedule task to run every hour
 cron.schedule('*/1 * * * *', async () => {
