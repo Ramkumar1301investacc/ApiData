@@ -26,7 +26,7 @@ const logger = createLogger({
 
 
 // Schedule task to run every hour
-cron.schedule('0 */4 * * *', async () => {
+cron.schedule('1 * * * *', async () => {
   const client = new Client({
     user: 'postgres',
     host: 'localhost',
